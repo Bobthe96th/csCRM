@@ -1,0 +1,19 @@
+RewriteEngine On
+
+# Redirect all requests to Node.js application
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://localhost:3000/$1 [P,L]
+
+# Handle API routes
+RewriteRule ^api/(.*)$ http://localhost:3000/api/$1 [P,L]
+
+# Handle static files
+RewriteRule ^_next/(.*)$ http://localhost:3000/_next/$1 [P,L]
+
+# Set headers for Next.js
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule> 
