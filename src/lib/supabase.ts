@@ -1,10 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://iiffkzrslzkqwnmebffp.supabase.co'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 
 console.log('Supabase URL:', supabaseUrl)
-console.log('Supabase Anon Key (first 10 chars):', supabaseAnonKey.substring(0, 10) + '...')
+if (supabaseAnonKey) {
+  console.log('Supabase Anon Key (first 10 chars):', supabaseAnonKey.substring(0, 10) + '...')
+} else {
+  console.log('Supabase Anon Key: Not provided')
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
