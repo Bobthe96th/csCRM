@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://iiffkzrslzkqwnmebffp.supabase.co'
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_secret_F7oOUzL_Wjk51P_GBDcA3Q_lB2QZ_mg'
 
 console.log('Supabase URL:', supabaseUrl)
 if (supabaseAnonKey) {
@@ -10,7 +10,13 @@ if (supabaseAnonKey) {
   console.log('Supabase Anon Key: Not provided')
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Create Supabase client with proper error handling
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false
+  }
+})
 
 // Types for our database schema
 export interface WhatsAppMessage {

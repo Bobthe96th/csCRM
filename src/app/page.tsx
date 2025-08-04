@@ -6,6 +6,9 @@ import Sidebar from '@/components/Sidebar'
 import ChatWindow from '@/components/ChatWindow'
 import StatusIndicator from '@/components/StatusIndicator'
 
+// Disable static generation for this page
+export const dynamic = 'force-dynamic'
+
 export default function Home() {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null)
