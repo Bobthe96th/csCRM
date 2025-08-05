@@ -49,16 +49,16 @@ export default function StatusIndicator({ supabaseUrl }: StatusIndicatorProps) {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 bg-white border border-gray-200 rounded-lg shadow-lg p-4">
-      <h3 className="text-sm font-semibold text-gray-700 mb-2">System Status</h3>
-      <div className="space-y-2">
+    <div className="bg-white rounded-lg">
+      <h3 className="text-sm font-semibold text-gray-700 mb-3">System Status</h3>
+      <div className="space-y-3">
         <div className="flex items-center space-x-2">
-          <div className={`w-2 h-2 rounded-full ${getStatusColor(apiStatus)}`} />
-          <span className="text-xs text-gray-600">API: {getStatusText(apiStatus)}</span>
+          <div className={`w-3 h-3 rounded-full ${getStatusColor(apiStatus)}`} />
+          <span className="text-sm text-gray-600">API: {getStatusText(apiStatus)}</span>
         </div>
         <div className="flex items-center space-x-2">
-          <div className={`w-2 h-2 rounded-full ${getStatusColor(supabaseStatus)}`} />
-          <span className="text-xs text-gray-600">Supabase: {getStatusText(supabaseStatus)}</span>
+          <div className={`w-3 h-3 rounded-full ${getStatusColor(supabaseStatus)}`} />
+          <span className="text-sm text-gray-600">Supabase: {getStatusText(supabaseStatus)}</span>
         </div>
       </div>
     </div>

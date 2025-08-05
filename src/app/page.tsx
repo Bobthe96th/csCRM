@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase, type WhatsAppMessage, type Conversation } from '@/lib/supabase'
 import Sidebar from '@/components/Sidebar'
 import ChatWindow from '@/components/ChatWindow'
-import StatusIndicator from '@/components/StatusIndicator'
+import TabbedInterface from '@/components/TabbedInterface'
 
 // Disable static generation for this page
 export const dynamic = 'force-dynamic'
@@ -212,7 +212,7 @@ export default function Home() {
     if (!selectedConversation || !messageText.trim()) return
 
     try {
-      // First, insert the message into Supabase
+      // Insert the message into Supabase
       const { error: supabaseError } = await supabase
         .from('whatsapp_inbox')
         .insert({
@@ -225,29 +225,16 @@ export default function Home() {
 
       if (supabaseError) throw supabaseError
 
-      // Then, send the message to WhatsApp via webhook
-      const webhookResponse = await fetch('/api/webhook/whatsapp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          to: selectedConversation,
-          message: messageText,
-          agent: 'Human',
-          conversation_id: `conv_${selectedConversation}`
-        })
-      })
-
-      if (!webhookResponse.ok) {
-        console.error('Webhook error:', await webhookResponse.text())
-      } else {
-        const webhookResult = await webhookResponse.json()
-        console.log('WhatsApp message sent via webhook:', webhookResult)
-      }
-
     } catch (error) {
       console.error('Error sending message:', error)
+    }
+  }
+
+  const handleQuickReplySelect = (replyText: string) => {
+    // This will be handled by the ChatWindow component
+    // We'll pass this function to ChatWindow to update the input field
+    if (selectedConversation) {
+      sendMessage(replyText)
     }
   }
 
@@ -265,7 +252,10 @@ export default function Home() {
         onSendMessage={sendMessage}
         onTypingFieldClick={playTypingSound}
       />
-      <StatusIndicator supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL} />
+      <TabbedInterface
+        supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL}
+        onQuickReplySelect={handleQuickReplySelect}
+      />
     </div>
   )
 } 
