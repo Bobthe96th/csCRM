@@ -4,7 +4,10 @@ import { useState, useEffect } from 'react'
 import { supabase, type WhatsAppMessage, type Conversation } from '@/lib/supabase'
 import Sidebar from '@/components/Sidebar'
 import ChatWindow from '@/components/ChatWindow'
-import TabbedInterface from '@/components/TabbedInterface'
+import PropertyManagementPanel from '@/components/PropertyManagementPanel'
+import ScheduledMessagesPanel from '@/components/ScheduledMessagesPanel'
+import AutoResponseTester from '@/components/AutoResponseTester'
+import TimezoneTest from '@/components/TimezoneTest'
 
 // Disable static generation for this page
 export const dynamic = 'force-dynamic'
@@ -14,10 +17,20 @@ export default function Home() {
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null)
   const [messages, setMessages] = useState<WhatsAppMessage[]>([])
   const [loading, setLoading] = useState(true)
+  const [showAutoResponseTester, setShowAutoResponseTester] = useState(false)
+  const [showScheduledMessages, setShowScheduledMessages] = useState(false)
 
   // Fetch conversations on component mount
   useEffect(() => {
     fetchConversations()
+  }, [])
+
+  // Dev scheduler trigger: poll server to process due scheduled messages
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch('/api/process-scheduled').catch(() => {})
+    }, 30000) // every 30s
+    return () => clearInterval(interval)
   }, [])
 
   // Fetch messages when conversation is selected
@@ -231,31 +244,50 @@ export default function Home() {
   }
 
   const handleQuickReplySelect = (replyText: string) => {
-    // This will be handled by the ChatWindow component
-    // We'll pass this function to ChatWindow to update the input field
     if (selectedConversation) {
       sendMessage(replyText)
     }
   }
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar
-        conversations={conversations}
-        selectedConversation={selectedConversation}
-        onSelectConversation={setSelectedConversation}
-        loading={loading}
-      />
-      <ChatWindow
-        messages={messages}
-        selectedConversation={selectedConversation}
-        onSendMessage={sendMessage}
-        onTypingFieldClick={playTypingSound}
-      />
-      <TabbedInterface
-        supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL}
-        onQuickReplySelect={handleQuickReplySelect}
-      />
+    <div className="flex flex-col h-screen bg-gray-100">
+      {/* Timezone test removed from main UI; summarized inside Status panel */}
+      
+      <div className="flex flex-1 min-h-0 overflow-hidden">
+        {showAutoResponseTester ? (
+          <div className="flex-1 min-h-0 overflow-y-auto">
+            <AutoResponseTester />
+          </div>
+        ) : (
+          <>
+            <Sidebar
+              conversations={conversations}
+              selectedConversation={selectedConversation}
+              onSelectConversation={setSelectedConversation}
+              loading={loading}
+            />
+            <ChatWindow
+              messages={messages}
+              selectedConversation={selectedConversation}
+              onSendMessage={sendMessage}
+              onTypingFieldClick={playTypingSound}
+              onTestAutoResponse={() => setShowAutoResponseTester(!showAutoResponseTester)}
+              showAutoResponseTester={showAutoResponseTester}
+              onToggleScheduledMessages={() => setShowScheduledMessages(!showScheduledMessages)}
+              showScheduledMessages={showScheduledMessages}
+            />
+            {showScheduledMessages ? (
+              <ScheduledMessagesPanel conversations={conversations} />
+            ) : (
+              <PropertyManagementPanel
+                supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL}
+                onQuickReplySelect={handleQuickReplySelect}
+                conversations={conversations}
+              />
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 } 

@@ -23,6 +23,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Ensure the app never scrolls the whole page; only inner panes scroll */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 /* Basic layout styles */
 .flex {
   display: flex;
@@ -96,6 +102,15 @@ body {
 
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+/* Helpers to enable nested flex scroll areas */
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.min-h-0 {
+  min-height: 0;
 }
 
 .divide-y {
@@ -528,4 +543,63 @@ body {
 
 .text-gray-600 {
   color: #4b5563;
+}
+
+/* FullCalendar Custom Styles */
+.fc {
+  font-family: inherit;
+}
+
+.fc-toolbar-title {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+}
+
+.fc-button {
+  background-color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  font-weight: 500 !important;
+}
+
+.fc-button:hover {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+}
+
+.fc-button:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.fc-button-active {
+  background-color: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+}
+
+.fc-event {
+  border-radius: 4px !important;
+  border: none !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+}
+
+.fc-event-title {
+  font-weight: 500 !important;
+}
+
+.fc-daygrid-event {
+  white-space: nowrap !important;
+  border-radius: 4px !important;
+}
+
+.fc-daygrid-day.fc-day-today {
+  background-color: #eff6ff !important;
+}
+
+.fc-daygrid-day-number {
+  font-weight: 500 !important;
+}
+
+.fc-col-header-cell {
+  background-color: #f8fafc !important;
+  font-weight: 600 !important;
 } 

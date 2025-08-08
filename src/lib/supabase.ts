@@ -37,3 +37,35 @@ export interface Conversation {
   unread_count: number
   status: 'open' | 'closed' | 'pending'
 } 
+
+// User management types
+export type UserRole = 'admin' | 'agent'
+
+export interface AppUser {
+  id: number
+  display_name: string
+  email?: string
+  phone?: string
+  role: UserRole
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface Capability {
+  id: number
+  key: string
+  description?: string
+}
+
+export interface RoleCapability {
+  id: number
+  role: UserRole
+  capability_id: number
+}
+
+export interface UserCapability {
+  id: number
+  user_id: number
+  capability_id: number
+}
