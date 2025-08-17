@@ -62,7 +62,7 @@ export default function OccupancyPage() {
       const data = await ListingService.fetchAllListings()
       setProperties(data)
       if (data.length > 0 && !selectedProperty) {
-        setSelectedProperty(data[0].property_id)
+        setSelectedProperty(String(data[0].property_id))
       }
     } catch (error) {
       console.error('Error loading properties:', error)
@@ -155,7 +155,7 @@ export default function OccupancyPage() {
     extendedProps: event.extendedProps
   }))
 
-  const selectedPropertyData = properties.find(p => p.property_id === selectedProperty)
+  const selectedPropertyData = properties.find(p => String(p.property_id) === selectedProperty)
 
   if (loading) {
     return (
@@ -201,7 +201,7 @@ export default function OccupancyPage() {
                 {properties.map((property) => (
                   <button
                     key={property.property_id}
-                    onClick={() => setSelectedProperty(property.property_id)}
+                    onClick={() => setSelectedProperty(String(property.property_id))}
                     className={`w-full text-left p-3 rounded-lg border transition-colors ${
                       selectedProperty === property.property_id
                         ? 'border-blue-500 bg-blue-50 text-blue-700'
