@@ -295,7 +295,7 @@ export class AIAutoResponseService {
     // If it's a property number
     if (propertyInfo.startsWith('property_')) {
       const propertyId = propertyInfo.replace('property_', '')
-      return properties.find(p => p.property_id === propertyId) || null
+      return properties.find(p => String(p.property_id) === propertyId) || null
     }
 
     // If it's a location/district
