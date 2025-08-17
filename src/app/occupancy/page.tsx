@@ -203,7 +203,7 @@ export default function OccupancyPage() {
                     key={property.property_id}
                     onClick={() => setSelectedProperty(String(property.property_id))}
                     className={`w-full text-left p-3 rounded-lg border transition-colors ${
-                      selectedProperty === property.property_id
+                      selectedProperty === String(property.property_id)
                         ? 'border-blue-500 bg-blue-50 text-blue-700'
                         : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                     }`}
