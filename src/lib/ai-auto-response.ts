@@ -1,6 +1,7 @@
 import { AIService, PropertyContext, AIResponse } from './ai-service'
 import { ListingData } from './listing-types'
-import { GuestService, GuestVerificationRequest, GuestVerificationResult, GuestContext } from './guest-service'
+import { GuestService } from './guest-service'
+import { GuestVerificationRequest, GuestVerificationResult, GuestContext } from './guest-types'
 
 export interface AutoResponseResult {
   canAnswer: boolean
