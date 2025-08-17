@@ -238,6 +238,17 @@ export default function Home() {
 
       if (supabaseError) throw supabaseError
 
+      // Also send via server endpoint (n8n if configured, else Cloud API)
+      try {
+        await fetch('/api/webhook/whatsapp/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ to: selectedConversation, message: messageText })
+        })
+      } catch (e) {
+        console.error('Error calling send endpoint:', e)
+      }
+
     } catch (error) {
       console.error('Error sending message:', error)
     }
